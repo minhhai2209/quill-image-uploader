@@ -137,25 +137,11 @@ class ImageUploader {
 
   insertToEditor(url) {
     const range = this.range;
-
-    const lengthToDelete = this.calculatePlaceholderInsertLength();
-
-    // Delete the placeholder image
-    this.quill.deleteText(range.index, lengthToDelete, "user");
     // Insert the server saved image
     this.quill.insertEmbed(range.index, "image", `${url}`, "user");
 
     range.index++;
     this.quill.setSelection(range, "user");
-  }
-
-  // The length of the insert delta from insertBase64Image can vary depending on what part of the line the insert occurs
-  calculatePlaceholderInsertLength() {
-    return this.placeholderDelta.ops.reduce((accumulator, deltaOperation) => {
-      if (deltaOperation.hasOwnProperty("insert")) accumulator++;
-
-      return accumulator;
-    }, 0);
   }
 }
 
